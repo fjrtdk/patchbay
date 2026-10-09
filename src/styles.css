@@ -1,0 +1,256 @@
+@import "tailwindcss";
+
+@theme {
+  --color-canvas: #0c0d0b;
+  --color-surface: #141613;
+  --color-elevated: #1c1e1a;
+  --color-ink: #eceae4;
+  --color-muted: #9a968c;
+  --color-faint: #6f6c64;
+  --color-line: #2c2e28;
+  --color-accent: #d5ddd6;
+  --color-accent-ink: #141613;
+  --color-sage: #8fa396;
+  --color-fault: #c17b6e;
+  --font-sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", menlo, consolas, monospace;
+}
+
+:root {
+  --motion-micro: 80ms;
+  --motion-quick: 150ms;
+  --motion-fast: 250ms;
+  --motion-slow: 400ms;
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  color-scheme: dark;
+}
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-sage);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-sage) 35%, transparent);
+    color: var(--color-ink);
+  }
+}
+
+.bay-ui {
+  user-select: none;
+}
+
+.bay-ui input,
+.bay-ui textarea,
+.bay-ui select {
+  user-select: text;
+}
+
+.float-panel {
+  box-shadow: 0 16px 40px rgb(0 0 0 / 0.35);
+}
+
+.topbar {
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+}
+
+.dock {
+  position: fixed;
+  z-index: 20;
+  left: 50%;
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  max-width: calc(100vw - 1.5rem);
+}
+
+.dock-raised {
+  bottom: min(46vh, 20rem);
+}
+
+.dock-scroll {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.dock-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.inspector {
+  position: fixed;
+  z-index: 30;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: min(62vh, 34rem);
+  padding-bottom: env(safe-area-inset-bottom);
+  border-radius: 1.5rem 1.5rem 0 0;
+  animation: bay-sheet-y var(--motion-slow) var(--ease-smooth-out);
+}
+
+.inspector-scroll {
+  max-height: min(52vh, 30rem);
+  overflow-y: auto;
+}
+
+@keyframes bay-sheet-y {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes bay-sheet-x {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes bay-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.bay-overlay {
+  background: color-mix(in oklab, var(--color-canvas) 72%, transparent);
+}
+
+.bay-overlay[data-state="open"] {
+  animation: bay-fade var(--motion-fast) var(--ease-out);
+}
+
+.bay-overlay[data-state="closed"] {
+  animation: bay-fade var(--motion-quick) var(--ease-out) reverse;
+}
+
+@keyframes bay-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.bay-dialog[data-state="open"] {
+  animation: bay-pop var(--motion-fast) var(--ease-smooth-out);
+}
+
+.bay-dialog[data-state="closed"] {
+  animation: bay-pop var(--motion-quick) var(--ease-smooth-out) reverse;
+}
+
+.bay-paste {
+  min-height: 12rem;
+  resize: vertical;
+}
+
+.bay-dialog {
+  width: min(36rem, calc(100vw - 1.5rem));
+  max-height: min(85vh, 44rem);
+}
+
+.scan-log {
+  position: fixed;
+  z-index: 20;
+  left: max(0.75rem, env(safe-area-inset-left));
+  bottom: 5.75rem;
+  width: min(22rem, calc(100vw - 1.5rem));
+  max-height: 8.5rem;
+  overflow: auto;
+}
+
+@media (min-width: 768px) {
+  .scan-log {
+    left: 5rem;
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+}
+
+.bay-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+@media (min-width: 768px) {
+  .dock,
+  .dock-raised {
+    left: max(0.75rem, env(safe-area-inset-left));
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+    max-width: none;
+  }
+
+  .dock-scroll {
+    flex-direction: column;
+    max-height: calc(100vh - 6rem);
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+
+  .inspector {
+    top: 4.75rem;
+    right: max(0.75rem, env(safe-area-inset-right));
+    bottom: 0.75rem;
+    left: auto;
+    width: 20rem;
+    max-height: none;
+    padding-bottom: 0;
+    border-radius: 1.5rem;
+    animation-name: bay-sheet-x;
+  }
+
+  .inspector-scroll {
+    max-height: calc(100vh - 8rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inspector,
+  .inspector-in,
+  .bay-dialog[data-state="open"],
+  .bay-dialog[data-state="closed"],
+  .bay-overlay[data-state="open"],
+  .bay-overlay[data-state="closed"],
+  .bay-btn:active:not(:disabled) {
+    animation: none;
+    transform: none;
+    transition: none;
+  }
+}
