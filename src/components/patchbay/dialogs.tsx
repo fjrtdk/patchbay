@@ -5,6 +5,7 @@ import { toJson, toYaml } from "@/lib/patchbay/code";
 import { startReplay, useBay } from "@/lib/patchbay/model";
 import { decorateDiscovery, parseInventory, summary } from "@/lib/patchbay/parse";
 import { Button, Field, IconButton, areaClass, controlClass } from "@/components/patchbay/ui";
+import { CloudDialog } from "@/components/patchbay/cloud-dialog";
 
 export function BayDialogs() {
   const panel = useBay((state) => state.panel);
@@ -15,6 +16,7 @@ export function BayDialogs() {
       <DiscoverDialog open={panel === "discover"} onClose={close} />
       <CodeDialog open={panel === "code"} onClose={close} />
       <SampleDialog open={panel === "sample"} onClose={close} />
+      <CloudDialog open={panel === "cloud"} onClose={close} />
     </>
   );
 }

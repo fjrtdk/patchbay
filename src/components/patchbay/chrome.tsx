@@ -1,5 +1,6 @@
 import { useEffect, type ReactNode } from "react";
 import {
+  Cloud,
   FileCode,
   Flame,
   Library,
@@ -10,14 +11,18 @@ import {
   Search,
   Snowflake,
   Upload,
+  User as UserIcon,
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
 import { useBay } from "@/lib/patchbay/model";
 import { matchesQuery } from "@/lib/patchbay/types";
 import { fitView, zoomBy } from "@/lib/patchbay/view";
+import { useFirebase } from "@/lib/firebase/context";
+import { PWAInstallButton } from "@/components/pwa/PWAInstallButton";
 
 export function BayChrome() {
+  const { user } = useFirebase();
   const name = useBay((state) => state.name);
   const nodes = useBay((state) => state.nodes);
   const edges = useBay((state) => state.edges);
@@ -97,6 +102,34 @@ export function BayChrome() {
           </div>
           <div className="text-xs text-muted">{phase}</div>
         </div>
+        <div className="pointer-events-auto flex items-center gap-1.5 shrink-0">
+          <PWAInstallButton compact={true} />
+          <button
+            type="button"
+            onClick={() => openPanel("cloud")}
+            className="flex h-11 items-center gap-2 rounded-2xl border border-line bg-surface px-3 py-1 text-xs font-mono text-ink hover:bg-elevated transition"
+            title={user ? "Cloud Database & Account" : "Sign in to sync with Cloud"}
+          >
+            {user ? (
+              <>
+                {user.photoURL ? (
+                  <img src={user.photoURL} alt="" className="size-5 rounded-full object-cover" />
+                ) : (
+                  <UserIcon className="size-4 text-sage" />
+                )}
+                <span className="hidden lg:inline text-xs truncate max-w-24">
+                  {user.displayName?.split(" ")[0] || "Account"}
+                </span>
+                <span className="size-2 rounded-full bg-sage" title="Cloud Active" />
+              </>
+            ) : (
+              <>
+                <Cloud className="size-4 text-muted" />
+                <span className="hidden sm:inline">Sign in</span>
+              </>
+            )}
+          </button>
+        </div>
       </header>
 
       {linkMode ? (
@@ -109,6 +142,9 @@ export function BayChrome() {
         <div className="dock-scroll float-panel rounded-2xl border border-line bg-surface p-2">
           <DockButton label="Add" onClick={addNode}>
             <Plus className="size-4" />
+          </DockButton>
+          <DockButton label="Cloud" onClick={() => openPanel("cloud")}>
+            <Cloud className="size-4 text-sage" />
           </DockButton>
           <DockButton label="Import" onClick={() => openPanel("import")}>
             <Upload className="size-4" />

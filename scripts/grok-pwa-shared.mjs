@@ -161,15 +161,35 @@ export function renderWebManifest(hostHeader) {
   const name = appNameFromHost(hostHeader);
   return JSON.stringify(
     {
-      name,
-      short_name: name,
+      name: name || "Patchbay",
+      short_name: "Patchbay",
+      description: "Homelab as code. Interactive visual diagram and topology manager for networks and homelabs.",
       id: "/",
       start_url: "/",
       scope: "/",
       display: "standalone",
-      background_color: "#000000",
-      theme_color: "#000000",
+      orientation: "any",
+      background_color: "#0c0d0b",
+      theme_color: "#0c0d0b",
       icons: [
+        {
+          src: "/icon-192.png",
+          sizes: "192x192",
+          type: "image/png",
+          purpose: "any",
+        },
+        {
+          src: "/icon-512.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "any",
+        },
+        {
+          src: "/icon-maskable-512.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "maskable",
+        },
         {
           src: "/__grok/icon-180.png",
           sizes: "180x180",

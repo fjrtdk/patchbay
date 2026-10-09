@@ -63,7 +63,7 @@ export type Selection =
   | { kind: "edge"; id: string }
   | null;
 
-export type Panel = "import" | "discover" | "code" | "sample" | null;
+export type Panel = "import" | "discover" | "code" | "sample" | "cloud" | null;
 
 export function nodeRadius(kind: Kind): number {
   switch (kind) {

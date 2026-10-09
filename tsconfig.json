@@ -19,8 +19,10 @@
     "noEmit": true,
     "types": [
       "vite/client",
+      "vite-plugin-pwa/client",
       "node"
     ],
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "@/*": [

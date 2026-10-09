@@ -1,0 +1,7 @@
+{
+  "name": "Patchbay",
+  "description": "Homelab as code. A force-directed map of the closet: import YAML or JSON, paste a discovery scan, and inspect every link.",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
